@@ -16,8 +16,7 @@ public class DownloadFileServlet extends HttpServlet {
         Map<String, String[]> params = req.getParameterMap();
         String[] getParams = params.get("downloaded_file");
         File file = new File(getParams[0]);
-
-        resp.setHeader("Content-disposition", "attachment; filename="+file.getName());
+        resp.setHeader("Content-disposition", "attachment; filename=_"+file.getName());
 
         OutputStream out = resp.getOutputStream();
         FileInputStream in = new FileInputStream(file);

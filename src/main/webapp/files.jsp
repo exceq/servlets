@@ -29,15 +29,27 @@ ${fileDate}
             <td>
                 <c:if test="${f.getFile().isDirectory()}">
                     <span>📂</span>
-                    <a href="files?path=${f.getFile().getAbsolutePath()}">
+                    <c:url var="folderURL" value="/files">
+                        <c:param name="path" value="${f.getFile().getAbsolutePath()}"/>
+                    </c:url>
+                    <a href="${folderURL}">
                             ${f.getFile().getName()}
                     </a>
+                    <%--<a href="files?path=${f.getFile().getAbsolutePath()}">
+                            ${f.getFile().getName()}
+                    </a>--%>
                 </c:if>
                 <c:if test="${!f.getFile().isDirectory()}">
                     <span>🗋</span>
-                    <a href="download?downloaded_file=${f.getFile().getAbsolutePath()}">
+                    <c:url var="downloadURL" value="/download">
+                        <c:param name="downloaded_file" value="${f.getFile().getAbsolutePath()}"/>
+                    </c:url>
+                    <a href="${downloadURL}">
                             ${f.getFile().getName()}
                     </a>
+                    <%--<a href="download?downloaded_file=${f.getFile().getAbsolutePath()}">
+                            ${f.getFile().getName()}
+                    </a>--%>
                 </c:if>
             </td>
             <td>

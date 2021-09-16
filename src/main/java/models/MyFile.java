@@ -7,10 +7,8 @@ import java.util.Date;
 
 public class MyFile {
     File file;
-    String formattedSize;
-    String date;
 
-    public String getFormattedSize() {
+    public String formatSize() {
         long l = file.length();
         return  l < 1024 ? l + " Б":
                 l < (1024*1024) ? l / 1024 + " КБ" :
@@ -18,7 +16,7 @@ public class MyFile {
                 l / (1024*1024*1024) + " ГБ";
     }
 
-    public String getDate() {
+    public String formatDate() {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
         return df.format(new Date(file.lastModified()));
     }

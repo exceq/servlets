@@ -2,10 +2,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Files</title>
+    <title>Файлы</title>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </head>
 <body>
+
 ${fileDate}
 <h1>
     📂<%= request.getAttribute("currentFolder") %>
@@ -35,9 +36,6 @@ ${fileDate}
                     <a href="${folderURL}">
                             ${f.getFile().getName()}
                     </a>
-                    <%--<a href="files?path=${f.getFile().getAbsolutePath()}">
-                            ${f.getFile().getName()}
-                    </a>--%>
                 </c:if>
                 <c:if test="${!f.getFile().isDirectory()}">
                     <span>🗋</span>
@@ -47,18 +45,15 @@ ${fileDate}
                     <a href="${downloadURL}">
                             ${f.getFile().getName()}
                     </a>
-                    <%--<a href="download?downloaded_file=${f.getFile().getAbsolutePath()}">
-                            ${f.getFile().getName()}
-                    </a>--%>
                 </c:if>
             </td>
             <td>
                 <c:if test="${!f.getFile().isDirectory()}">
-                    ${f.getFormattedSize()}
+                    ${f.formatSize()}
                 </c:if>
             </td>
             <td>
-                ${f.getDate()}
+                ${f.formatDate()}
             </td>
         </tr>
     </c:forEach>

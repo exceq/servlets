@@ -1,5 +1,7 @@
 package servlets;
 
+import services.AccountService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -10,10 +12,8 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-
-        session.removeAttribute("password");
-        session.removeAttribute("login");
+        String sessionId = req.getSession().getId();
+        AccountService.deleteSession(sessionId);
 
         resp.sendRedirect(super.getServletContext().getContextPath());
     }

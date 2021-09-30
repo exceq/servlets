@@ -38,7 +38,7 @@ public class FilesHelperServlet extends HttpServlet {
         File file = new File(path);
         List<MyFile> files = Arrays.stream(file.listFiles())
                 .map(MyFile::new)
-                .sorted(this.fileDirComparator.thenComparing(fieldComparator("size", true)))
+                .sorted(this.fileDirComparator)//.thenComparing(fieldComparator("size", true)))
                 .collect(Collectors.toList());
 
         req.setAttribute("roots", this.roots);
@@ -46,7 +46,12 @@ public class FilesHelperServlet extends HttpServlet {
         req.setAttribute("currentFolder", file.getAbsolutePath());
         req.setAttribute("parentFolder", file.getParent());
         req.setAttribute("fileDate", new MyFile(file).formatDate());
-        getServletContext().getRequestDispatcher("/files.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/view/files.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        getServletContext().getRequestDispatcher("/view/files.jsp").forward(req, resp);
     }
 
     private Comparator<MyFile> initComparator() {

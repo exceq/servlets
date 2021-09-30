@@ -1,9 +1,9 @@
 <%@ page import="models.MyFile" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Файлы</title>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </head>
 <body>
 
@@ -11,6 +11,9 @@ ${fileDate}
 <h1>
     📂<%= request.getAttribute("currentFolder") %>
 </h1>
+<div align="right">
+    <a href="/logout">Выйти</a>
+</div>
 <h4>
     Корни:
     <c:forEach var="r" items="${roots}">
@@ -28,7 +31,6 @@ ${fileDate}
     <c:forEach var="f" items="${files}">
         <tr>
             <td>
-            q
                 <c:if test="${f.getFile().isDirectory()}">
                     <span>📂</span>
                     <c:url var="folderURL" value="/files">

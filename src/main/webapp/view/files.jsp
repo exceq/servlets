@@ -12,9 +12,7 @@ ${fileDate}
     📂<%= request.getAttribute("currentFolder") %>
 </h1>
 <div align="right">
-    <button>
-        <a href="/logout">Выйти</a>
-    </button>
+    <button onclick="window.location.href = '/logout';">Выйти</button>
 </div>
 <hr>
 <a href="files?path=${parentFolder}">Вверх</a>

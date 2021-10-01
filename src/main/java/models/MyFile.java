@@ -10,10 +10,10 @@ public class MyFile {
 
     public String formatSize() {
         long l = file.length();
-        return  l < 1024 ? l + " Б":
-                l < (1024*1024) ? l / 1024 + " КБ" :
-                l < (1024 *1024*1024) ? l/(1024*1024) + " МБ":
-                l / (1024*1024*1024) + " ГБ";
+        return  l < 1024 ? l + " B":
+                l < (1024*1024) ? l / 1024 + " KB" :
+                l < (1024 *1024*1024) ? l/(1024*1024) + " MB":
+                l / (1024*1024*1024) + " GB";
     }
 
     public String formatDate() {

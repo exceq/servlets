@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.Map;
 
 @WebServlet("/download")
@@ -16,9 +17,9 @@ public class DownloadFileServlet extends HttpServlet {
         Map<String, String[]> params = req.getParameterMap();
         String[] getParams = params.get("downloaded_file");
         File file = new File(getParams[0]);
-        resp.setHeader("Content-disposition", "attachment; filename=_"+file.getName());
-    //escape последовательность
-        //url encode
+        String filename = URLEncoder.encode(file.getName(), "utf-8");
+        resp.setHeader("Content-disposition", "attachment;filename=" + filename);
+
         OutputStream out = resp.getOutputStream();
         FileInputStream in = new FileInputStream(file);
         byte[] buffer = new byte[4096];

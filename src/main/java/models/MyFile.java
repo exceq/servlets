@@ -17,7 +17,7 @@ public class MyFile {
     }
 
     public String formatDate() {
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         return df.format(new Date(file.lastModified()));
     }
 

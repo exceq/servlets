@@ -12,14 +12,10 @@ ${fileDate}
     📂<%= request.getAttribute("currentFolder") %>
 </h1>
 <div align="right">
-    <a href="/logout">Выйти</a>
+    <button>
+        <a href="/logout">Выйти</a>
+    </button>
 </div>
-<h4>
-    Корни:
-    <c:forEach var="r" items="${roots}">
-        <a href ="files?path=${r}">${r}</a>
-    </c:forEach>
-</h4>
 <hr>
 <a href="files?path=${parentFolder}">Вверх</a>
 <table cellspacing="7">
@@ -56,7 +52,7 @@ ${fileDate}
                 </c:if>
             </td>
             <td>
-                ${f.formatDate()}
+                    ${f.formatDate()}
             </td>
         </tr>
     </c:forEach>

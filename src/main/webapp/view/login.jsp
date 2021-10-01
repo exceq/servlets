@@ -8,7 +8,7 @@
 <div class="form">
     <h1>Вход в систему</h1><br>
 
-    <form method="post" action="/sessions">
+    <form method="post" action="/auth">
         <input type="text" required placeholder="login" name="login"><br>
         <input type="password" required placeholder="password" name="password"><br><br>
         <input class="button" type="submit" value="Войти">

@@ -1,6 +1,6 @@
 package servlets;
 
-import models.UserProfile;
+import models.User;
 import services.DBService;
 
 import javax.servlet.*;
@@ -24,9 +24,9 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
-        UserProfile profile = new UserProfile(login, password, email);
+        User user = new User(login, password, email);
         try {
-            DBService.addUser(profile);
+            DBService.addUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }

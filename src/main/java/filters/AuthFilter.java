@@ -1,6 +1,6 @@
 package filters;
 
-import models.UserProfile;
+import models.User;
 import services.DBService;
 
 import javax.servlet.*;
@@ -26,14 +26,14 @@ public class AuthFilter extends HttpFilter {
         String password = req.getParameter("password");
 
         String sessionId = req.getSession().getId();
-        UserProfile profile = null;
+        User user = null;
         try {
-            profile = DBService.getUserBySessionId(sessionId);
+            user = DBService.getUserBySessionId(sessionId);
         } catch (SQLException e) {
             req.getServletContext().getRequestDispatcher("/view/login.jsp").forward(req, resp);
             return;
         }
-        if (profile == null && (login == null || password == null)) {
+        if (user == null && (login == null || password == null)) {
             req.getServletContext().getRequestDispatcher("/view/login.jsp").forward(req, resp);
             return;
         }

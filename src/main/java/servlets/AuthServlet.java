@@ -1,6 +1,6 @@
 package servlets;
 
-import models.UserProfile;
+import models.User;
 import services.DBService;
 
 import javax.servlet.*;
@@ -23,14 +23,14 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        UserProfile profile = null;
+        User user = null;
         try {
-            profile = DBService.getUserByLogin(login);
+            user = DBService.getUserByLogin(login);
         } catch (SQLException e) {
             e.printStackTrace();
             //TODO redirect to login.jsp
         }
-        if (profile == null || !profile.getPassword().equals(password)) {
+        if (user == null || !user.getPassword().equals(password)) {
             resp.setContentType("text/html;charset=utf-8");
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             resp.sendRedirect("/view/login.jsp");
@@ -38,7 +38,7 @@ public class AuthServlet extends HttpServlet {
         }
 
         try {
-            DBService.addSession(req.getSession().getId(),profile);
+            DBService.addSession(req.getSession().getId(),user);
         } catch (SQLException e) {
             e.printStackTrace();
         }

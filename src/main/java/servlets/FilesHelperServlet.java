@@ -34,10 +34,12 @@ public class FilesHelperServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String[]> params = req.getParameterMap();
-        UserProfile user = AccountService.getUserBySessionId(req.getSession().getId());
+        String login = (String) req.getSession().getAttribute("login");
         String path = params.getOrDefault("path", new String[]{""})[0];
 
-        File dirFile = path.contains(user.getLogin()) ? new File(path) : getUserDirFile(user.getLogin());
+        File dirFile = new File(path);
+        if (!dirFile.exists() || !path.contains(login))
+            dirFile = getUserDirFile(login);
 
         List<MyFile> files = getSortedFiles(dirFile);
 

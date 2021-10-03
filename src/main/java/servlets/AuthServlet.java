@@ -14,23 +14,15 @@ public class AuthServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        if (login == null || password == null) {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        if (login == null || password == null)
             resp.sendRedirect("/view/login.jsp");
-            return;
-        }
 
         UserProfile profile = AccountService.getUserByLogin(login);
-        if (profile == null || !profile.getPassword().equals(password)) {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        if (profile == null || !profile.getPassword().equals(password))
             resp.sendRedirect("/view/login.jsp");
-            return;
-        }
+
         AccountService.addSession(req.getSession().getId(), profile);
-        resp.setContentType("text/html;charset=utf-8");
-        resp.setStatus(HttpServletResponse.SC_OK);
+        req.getSession().setAttribute("login", login);
         resp.sendRedirect("/files");
     }
 }

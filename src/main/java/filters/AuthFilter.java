@@ -1,7 +1,7 @@
 package filters;
 
 import models.UserProfile;
-import services.AccountService;
+import services.DBService;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -9,9 +9,11 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebFilter(urlPatterns = {"/","/files"})
 public class AuthFilter extends HttpFilter {
+
 
     @Override
     public void destroy() {
@@ -24,7 +26,13 @@ public class AuthFilter extends HttpFilter {
         String password = req.getParameter("password");
 
         String sessionId = req.getSession().getId();
-        UserProfile profile = AccountService.getUserBySessionId(sessionId);
+        UserProfile profile = null;
+        try {
+            profile = DBService.getUserBySessionId(sessionId);
+        } catch (SQLException e) {
+            req.getServletContext().getRequestDispatcher("/view/login.jsp").forward(req, resp);
+            return;
+        }
         if (profile == null && (login == null || password == null)) {
             req.getServletContext().getRequestDispatcher("/view/login.jsp").forward(req, resp);
             return;

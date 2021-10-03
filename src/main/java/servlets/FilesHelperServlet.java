@@ -1,8 +1,6 @@
 package servlets;
 
 import models.MyFile;
-import models.UserProfile;
-import services.AccountService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,10 +29,10 @@ public class FilesHelperServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String[]> params = req.getParameterMap();
-        UserProfile user = AccountService.getUserBySessionId(req.getSession().getId());
+        String login = (String) req.getSession().getAttribute("login");
         String path = params.getOrDefault("path", new String[]{""})[0];
 
-        File dirFile = path.contains(user.getLogin()) ? new File(path) : getUserDirFile(user.getLogin());
+        File dirFile = path.contains(login) ? new File(path) : getUserDirFile(login);
 
         List<MyFile> files = getSortedFiles(dirFile);
 

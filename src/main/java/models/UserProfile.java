@@ -11,12 +11,6 @@ public class UserProfile {
         this.email = email;
     }
 
-    public UserProfile(String login) {
-        this.login = login;
-        this.password = login;
-        this.email = login;
-    }
-
     public String getLogin() {
         return login;
     }

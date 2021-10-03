@@ -12,17 +12,13 @@ import java.sql.SQLException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
 
-        if (login == null || password == null || email == null) {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        if (login == null || password == null || email == null)
             resp.sendRedirect("/view/registration.jsp");
-            return;
-        }
 
         User user = new User(login, password, email);
         try {
@@ -30,8 +26,6 @@ public class RegistrationServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        resp.setContentType("text/html;charset=utf-8");
-        resp.setStatus(HttpServletResponse.SC_OK);
         resp.sendRedirect("/files");
     }
 }

@@ -9,7 +9,13 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
+import org.apache.commons.codec.digest.DigestUtils;
 
 @WebFilter(urlPatterns = {"/","/files"})
 public class AuthFilter extends HttpFilter {
@@ -30,12 +36,11 @@ public class AuthFilter extends HttpFilter {
         try {
             user = DBService.getUserBySessionId(sessionId);
         } catch (SQLException e) {
-            req.getServletContext().getRequestDispatcher("/view/login.jsp").forward(req, resp);
-            return;
+            e.printStackTrace();
+            resp.sendRedirect("/view/login.jsp");
         }
         if (user == null && (login == null || password == null)) {
-            req.getServletContext().getRequestDispatcher("/view/login.jsp").forward(req, resp);
-            return;
+            resp.sendRedirect("/view/login.jsp");
         }
         chain.doFilter(req, resp);
     }

@@ -10,8 +10,11 @@ import java.sql.SQLException;
 public class DBService {
     private final static Connection connection;
 
+    private final static UsersDAO dao;
+
     static {
         connection = getMysqlConnection();
+        dao = new UsersDAO(connection);
         try {
             new UsersDAO(connection).createTable();
         } catch (SQLException e) {
@@ -22,27 +25,27 @@ public class DBService {
     private DBService(){}
 
     public static User getUserByLogin(String login) throws SQLException {
-        return new UsersDAO(connection).getUserByLogin(login);
+        return dao.getUserByLogin(login);
     }
 
     public static User getUserBySessionId(String sessionId) throws SQLException {
-        return new UsersDAO(connection).getUserBySessionId(sessionId);
+        return dao.getUserBySessionId(sessionId);
     }
 
     public static void addUser(User user) throws SQLException {
-        new UsersDAO(connection).insertUser(user);
+        dao.insertUser(user);
     }
 
     public static void addSession(String sessionId, User user) throws SQLException {
-        new UsersDAO(connection).updateUserSessionId(sessionId, user);
+        dao.updateUserSessionId(sessionId, user);
     }
 
     public static void deleteSession(String sessionId) throws SQLException {
-        new UsersDAO(connection).deleteSession(sessionId);
+        dao.deleteSession(sessionId);
     }
 
     public static void cleanUp() throws SQLException {
-        new UsersDAO(connection).dropTable();
+        dao.dropTable();
     }
 
     public static Connection getMysqlConnection() {

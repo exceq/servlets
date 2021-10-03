@@ -32,7 +32,9 @@ public class FilesHelperServlet extends HttpServlet {
         String login = (String) req.getSession().getAttribute("login");
         String path = params.getOrDefault("path", new String[]{""})[0];
 
-        File dirFile = path.contains(login) ? new File(path) : getUserDirFile(login);
+        File dirFile = new File(path);
+        if (!dirFile.exists() || !path.contains(login))
+            dirFile = getUserDirFile(login);
 
         List<MyFile> files = getSortedFiles(dirFile);
 
@@ -59,8 +61,6 @@ public class FilesHelperServlet extends HttpServlet {
         return file;
     }
 
-
-
     private Comparator<MyFile> initComparator() {
         return (a, b) -> a.getFile().isDirectory() && !b.getFile().isDirectory() ? -1 :
                 !a.getFile().isDirectory() && b.getFile().isDirectory() ? 1 : 0;
@@ -79,6 +79,5 @@ public class FilesHelperServlet extends HttpServlet {
             comp.reversed();
         }
         return comp;
-
     }
 }

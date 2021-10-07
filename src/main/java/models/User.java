@@ -1,20 +1,14 @@
 package models;
 
-public class UserProfile {
+public class User {
     private final String login;
     private final String password;
     private final String email;
 
-    public UserProfile(String login, String pass, String email) {
+    public User(String login, String pass, String email) {
         this.login = login;
         this.password = pass;
         this.email = email;
-    }
-
-    public UserProfile(String login) {
-        this.login = login;
-        this.password = login;
-        this.email = login;
     }
 
     public String getLogin() {

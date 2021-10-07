@@ -1,8 +1,6 @@
 package servlets;
 
 import models.MyFile;
-import models.UserProfile;
-import services.AccountService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,9 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -66,8 +61,6 @@ public class FilesHelperServlet extends HttpServlet {
         return file;
     }
 
-
-
     private Comparator<MyFile> initComparator() {
         return (a, b) -> a.getFile().isDirectory() && !b.getFile().isDirectory() ? -1 :
                 !a.getFile().isDirectory() && b.getFile().isDirectory() ? 1 : 0;
@@ -86,6 +79,5 @@ public class FilesHelperServlet extends HttpServlet {
             comp.reversed();
         }
         return comp;
-
     }
 }

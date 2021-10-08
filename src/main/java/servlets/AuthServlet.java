@@ -37,12 +37,12 @@ public class AuthServlet extends HttpServlet {
         }
 
         try {
-            DBService.addSession(req.getSession().getId(),user);
+            DBService.addSession(req.getSession().getId(), user);
         } catch (SQLException e) {
             e.printStackTrace();
+            return;
         }
 
-        req.getSession().setAttribute("login", login);
         resp.sendRedirect("/files");
     }
 }

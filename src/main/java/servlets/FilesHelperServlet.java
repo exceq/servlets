@@ -1,6 +1,7 @@
 package servlets;
 
 import models.MyFile;
+import services.DBService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -29,13 +31,15 @@ public class FilesHelperServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String[]> params = req.getParameterMap();
-        String login = (String) req.getSession().getAttribute("login");
+        String login;
+        try {
+            login = DBService.getUserBySessionId(req.getSession().getId()).getLogin();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         String path = params.getOrDefault("path", new String[]{""})[0];
-
-        File dirFile = new File(path);
-        if (!dirFile.exists() || !path.contains(login))
-            dirFile = getUserDirFile(login);
-
+        File dirFile = checkPath(login, path);
         List<MyFile> files = getSortedFiles(dirFile);
 
         req.setAttribute("files", files);
@@ -43,6 +47,15 @@ public class FilesHelperServlet extends HttpServlet {
         req.setAttribute("parentFolder", dirFile.getParent());
         req.setAttribute("fileDate", new MyFile(dirFile).formatDate());
         getServletContext().getRequestDispatcher("/view/files.jsp").forward(req, resp);
+    }
+
+    private File checkPath(String login, String path) throws IOException {
+        File dirFile = new File(path);
+        path = dirFile.getCanonicalPath();
+        File userFile = getUserDirFile(login);
+        if (!dirFile.exists() || !path.contains(userFile.getPath()))
+            dirFile = userFile;
+        return dirFile;
     }
 
     private List<MyFile> getSortedFiles(File dirFile) {

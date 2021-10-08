@@ -1,29 +1,24 @@
 package dao.sqlscripts;
 
-import models.User;
-
 public class UserManagement {
 
-    public static String getDeleteSessionIdScript(String sessionId) {
-        return String.format("UPDATE users SET session_id = NULL " +
-                "WHERE session_id = '%s';", sessionId);
+    public static String getDeleteSessionIdScript() {
+        return "UPDATE users SET session_id = NULL WHERE session_id = ?";
     }
 
-    public static String getUpdateUserSessionIdScript(String sessionId, User user) {
-        return String.format("UPDATE users SET session_id ='%s'" +
-                "WHERE login ='%s';", sessionId, user.getLogin());
+    public static String getUpdateUserSessionIdScript() {
+        return "UPDATE users SET session_id = ? WHERE login = ?";
     }
 
-    public static String getInsertUserScript(User user) {
-        return String.format("INSERT INTO users (login, password, email) " +
-                "VALUES ('%s','%s','%s');", user.getLogin(), user.getPassword(),user.getEmail());
+    public static String getInsertUserScript() {
+        return "INSERT INTO users (login, password, email) VALUES (?,?,?)";
     }
 
-    public static String getUserByLoginScript(String login) {
-        return String.format("SELECT * FROM users WHERE login='%s';", login);
+    public static String getUserByLoginScript() {
+        return "SELECT * FROM users WHERE login= ?";
     }
 
-    public static String getUserBySessionIdScript(String sessionId) {
-        return String.format("SELECT * FROM users WHERE session_id='%s';", sessionId);
+    public static String getUserBySessionIdScript() {
+        return "SELECT * FROM users WHERE session_id= ?";
     }
 }

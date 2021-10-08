@@ -12,17 +12,16 @@ import java.sql.SQLException;
 public class UsersDAO {
 
     private final Executor executor;
-
     public UsersDAO(Connection connection) {
         this.executor = new Executor(connection);
     }
 
     public User getUserByLogin(String login) throws SQLException {
-        return executor.execQuery(UserManagement.getUserByLoginScript(login), this::extractUserFromResultSet);
+        return executor.execQuery(UserManagement.getUserByLoginScript(), this::extractUserFromResultSet, login);
     }
 
     public User getUserBySessionId(String sessionId) throws SQLException {
-        return executor.execQuery(UserManagement.getUserBySessionIdScript(sessionId), this::extractUserFromResultSet);
+        return executor.execQuery(UserManagement.getUserBySessionIdScript(), this::extractUserFromResultSet, sessionId);
     }
 
     private User extractUserFromResultSet(ResultSet result) throws SQLException {
@@ -35,15 +34,15 @@ public class UsersDAO {
     }
 
     public void insertUser(User user) throws SQLException {
-        executor.execUpdate(UserManagement.getInsertUserScript(user));
+        executor.execUpdate(UserManagement.getInsertUserScript(), user.getLogin(), user.getPassword(), user.getEmail());
     }
 
     public void updateUserSessionId(String sessionId, User user) throws SQLException {
-        executor.execUpdate(UserManagement.getUpdateUserSessionIdScript(sessionId, user));
+        executor.execUpdate(UserManagement.getUpdateUserSessionIdScript(), sessionId, user.getLogin());
     }
 
     public void deleteSession(String sessionId) throws SQLException {
-        executor.execUpdate(UserManagement.getDeleteSessionIdScript(sessionId));
+        executor.execUpdate(UserManagement.getDeleteSessionIdScript(), sessionId);
     }
 
     public void createTable() throws SQLException {

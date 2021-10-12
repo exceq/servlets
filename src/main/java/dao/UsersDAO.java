@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UsersDAO {
+public class UsersDAO implements UserDAO {
 
     private final Executor executor;
     public UsersDAO(Connection connection) {

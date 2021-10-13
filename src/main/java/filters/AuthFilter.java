@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebFilter(urlPatterns = {"/","/files"})
+@WebFilter(urlPatterns = {"/", "/files", "/download"})
 public class AuthFilter extends HttpFilter {
-
 
     @Override
     public void destroy() {
@@ -23,19 +22,11 @@ public class AuthFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
 
-        String sessionId = req.getSession().getId();
-        User user = null;
-        try {
-            user = DBService.getUserBySessionId(sessionId);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        User user = DBService.getUserBySessionId(req.getSession().getId());
+        if (user == null) {
             resp.sendRedirect("/view/login.jsp");
-        }
-        if (user == null && (login == null || password == null)) {
-            resp.sendRedirect("/view/login.jsp");
+            return;
         }
         chain.doFilter(req, resp);
     }

@@ -1,5 +1,6 @@
 package servlets;
 
+import javassist.NotFoundException;
 import models.User;
 import services.DBService;
 
@@ -25,16 +26,10 @@ public class RegistrationServlet extends HttpServlet {
 
         User user = new User(login, password, email);
 
-        try {
-            if (DBService.getUserByLogin(login) != null){
-                throw new SQLException();
-            }
-            DBService.addUser(user);
-            DBService.addSession(req.getSession().getId(), user);
-            resp.sendRedirect("/files");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            resp.sendRedirect("/view/login.jsp");
+        if (DBService.getUserByLogin(login) != null){
+            throw new RuntimeException("This login already used: " + login);
         }
+        DBService.addSession(req.getSession().getId(), user);
+        resp.sendRedirect("/files");
     }
 }

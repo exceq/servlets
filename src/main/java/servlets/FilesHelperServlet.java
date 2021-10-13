@@ -1,6 +1,7 @@
 package servlets;
 
 import models.MyFile;
+import models.User;
 import services.DBService;
 
 import javax.servlet.ServletException;
@@ -32,12 +33,13 @@ public class FilesHelperServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String[]> params = req.getParameterMap();
         String login;
-        try {
-            login = DBService.getUserBySessionId(req.getSession().getId()).getLogin();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+        User user = DBService.getUserBySessionId(req.getSession().getId());
+
+        if (user == null) {
+            throw new RuntimeException("Not authorized");
         }
+        login = user.getLogin();
+
         String path = params.getOrDefault("path", new String[]{""})[0];
         File dirFile = checkPath(login, path);
         List<MyFile> files = getSortedFiles(dirFile);

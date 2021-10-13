@@ -22,27 +22,12 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        User user = null;
-        try {
-            user = DBService.getUserByLogin(login);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            resp.sendRedirect("/view/login.jsp");
-            return;
-        }
-
+        User user = DBService.getUserByLogin(login);
         if (user == null || !user.getPassword().equals(password)){
             resp.sendRedirect("/view/login.jsp");
             return;
         }
-
-        try {
-            DBService.addSession(req.getSession().getId(), user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-
+        DBService.addSession(req.getSession().getId(), user);
         resp.sendRedirect("/files");
     }
 }

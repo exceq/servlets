@@ -14,12 +14,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String sessionId = req.getSession().getId();
-        try {
-            DBService.deleteSession(sessionId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        req.getSession().removeAttribute("login");
+        DBService.deleteSession(sessionId);
         resp.sendRedirect("/view/login.jsp");
     }
 }
